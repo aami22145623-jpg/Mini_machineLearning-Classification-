@@ -1,0 +1,6 @@
+__pycache__/
+
+environment.yml
+*.ipynb
+loan_approval.csv
+test.py

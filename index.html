@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loan Approval Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Loan Approval</h2>
+
+        <label>Age</label>
+        <input type="number" id="age" placeholder="Enter age">
+
+        <label>Income (K)</label>
+        <input type="number" id="income_k" placeholder="Enter income">
+
+        <label>Credit Score</label>
+        <input type="number" id="credit_score" placeholder="Enter credit score">
+
+        <button onclick="predict()">Predict</button>
+
+        <div id="result"></div>
+
+    </div>
+
+
+    <script>
+
+        async function predict() {
+
+            const age = document.getElementById("age").value;
+            const income_k = document.getElementById("income_k").value;
+            const credit_score = document.getElementById("credit_score").value;
+
+            const result = document.getElementById("result");
+
+            try {
+
+                const response = await fetch(
+                    "http://127.0.0.1:8000/predict",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            age: Number(age),
+                            income_k: Number(income_k),
+                            credit_score: Number(credit_score)
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                result.innerHTML = `
+                    <p><strong>${data.msg}</strong></p>
+                    <p>Probability: ${(data.approval_probability * 100).toFixed(2)}%</p>
+                `;
+
+            } catch (error) {
+
+                result.innerHTML = `
+                    <p style="color:red;">
+                        Error connecting to API
+                    </p>
+                `;
+
+                console.error(error);
+            }
+        }
+
+    </script>
+
+</body>
+</html>
+
