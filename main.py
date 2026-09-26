@@ -5,6 +5,10 @@ import joblib
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
+from fastapi.responses import FileResponse
+
+
+
 logging.basicConfig(
     level=logging.INFO
 )
@@ -41,10 +45,7 @@ class LoanRequest(BaseModel):
 
 @app.get("/")
 def home():
-
-    return {
-        "message": "Loan Approval API is running"
-    }
+    return FileResponse("index.html")
 @app.get("/health")
 def health_check():
 

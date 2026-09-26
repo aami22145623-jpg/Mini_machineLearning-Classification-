@@ -272,33 +272,20 @@ async function predict() {
 
     try {
 
-        const response = await fetch(
-
-            "https://minimachinelearning-classification-production.up.railway.app/predict",
-
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type": "application/json"
-
-                },
-
-                body: JSON.stringify({
-
-                    age: Number(age),
-
-                    income_k: Number(income_k),
-
-                    credit_score: Number(credit_score)
-
-                })
-
-            }
-
-        );
+    const response = await fetch(
+        "/predict",
+        {
+         method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+             body: JSON.stringify({
+            age: Number(age),
+            income_k: Number(income_k),
+            credit_score: Number(credit_score)
+        })
+    }
+);
 
 
         // Check HTTP status
